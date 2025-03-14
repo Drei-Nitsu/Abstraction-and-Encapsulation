@@ -1,24 +1,21 @@
 #include <iostream>
 #include <vector>
-#include <limits>
 #include <string>
+#include <limits> 
 
 using namespace std;
 
-// Abstract Base Class (Abstraction)
 class Employee {
 protected:
     int id;
     string name;
 public:
     Employee(int id, string name) : id(id), name(name) {}
-    virtual void displaySalary() const = 0; // Pure virtual function (Abstraction)
+    virtual void displaySalary() const = 0; 
     int getId() const { return id; }
-    string getName() const { return name; }
     virtual ~Employee() {}
 };
 
-// Full-time Employee
 class FullTimeEmployee : public Employee {
 private:
     double salary;
@@ -32,7 +29,6 @@ public:
     }
 };
 
-// Part-time Employee
 class PartTimeEmployee : public Employee {
 private:
     double hourlyWage;
@@ -49,7 +45,6 @@ public:
     }
 };
 
-// Contractual Employee
 class ContractualEmployee : public Employee {
 private:
     double salaryPerProject;
@@ -66,7 +61,6 @@ public:
     }
 };
 
-// Function to check for duplicate ID
 bool isDuplicateID(int id, const vector<Employee*>& employees) {
     for (const auto& emp : employees) {
         if (emp->getId() == id) return true;
@@ -74,7 +68,6 @@ bool isDuplicateID(int id, const vector<Employee*>& employees) {
     return false;
 }
 
-// Function to get a valid integer input
 int getValidIntInput(const string& prompt) {
     int value;
     while (true) {
@@ -85,13 +78,11 @@ int getValidIntInput(const string& prompt) {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Invalid input! Please enter a positive number.\n";
         } else {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             return value;
         }
     }
 }
 
-// Function to get a valid floating-point input
 double getValidDoubleInput(const string& prompt) {
     double value;
     while (true) {
@@ -102,13 +93,11 @@ double getValidDoubleInput(const string& prompt) {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Invalid input! Please enter a positive number.\n";
         } else {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             return value;
         }
     }
 }
 
-// Main menu function
 void menu() {
     vector<Employee*> employees;
     int choice;
@@ -132,30 +121,52 @@ void menu() {
 
         if (choice == 5) break;
 
-        int id = getValidIntInput("Enter Employee ID: ");
-        while (isDuplicateID(id, employees)) {
-            cout << "Duplicate ID! Enter a unique ID.\n";
-            id = getValidIntInput("Enter Employee ID: ");
-        }
-
-        string name;
-        cout << "Enter Employee Name: ";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer before using getline
-        getline(cin, name);
-
         switch (choice) {
             case 1: {
+                int id = getValidIntInput("Enter Employee ID: ");
+                while (isDuplicateID(id, employees)) {
+                    cout << "Duplicate ID! Enter a unique ID.\n";
+                    id = getValidIntInput("Enter Employee ID: ");
+                }
+
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Enter Employee Name: ";
+                string name;
+                getline(cin, name);
+
                 double salary = getValidDoubleInput("Enter Fixed Salary: $");
                 employees.push_back(new FullTimeEmployee(id, name, salary));
                 break;
             }
             case 2: {
+                int id = getValidIntInput("Enter Employee ID: ");
+                while (isDuplicateID(id, employees)) {
+                    cout << "Duplicate ID! Enter a unique ID.\n";
+                    id = getValidIntInput("Enter Employee ID: ");
+                }
+
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Enter Employee Name: ";
+                string name;
+                getline(cin, name);
+
                 double hourlyWage = getValidDoubleInput("Enter Hourly Wage: $");
                 int hoursWorked = getValidIntInput("Enter Hours Worked: ");
                 employees.push_back(new PartTimeEmployee(id, name, hourlyWage, hoursWorked));
                 break;
             }
             case 3: {
+                int id = getValidIntInput("Enter Employee ID: ");
+                while (isDuplicateID(id, employees)) {
+                    cout << "Duplicate ID! Enter a unique ID.\n";
+                    id = getValidIntInput("Enter Employee ID: ");
+                }
+
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Enter Employee Name: ";
+                string name;
+                getline(cin, name);
+
                 double salaryPerProject = getValidDoubleInput("Enter Payment Per Project: $");
                 int numProjects = getValidIntInput("Enter Number of Projects: ");
                 employees.push_back(new ContractualEmployee(id, name, salaryPerProject, numProjects));
@@ -166,7 +177,6 @@ void menu() {
                 for (const auto& emp : employees) {
                     emp->displaySalary();
                 }
-                cout << "--------------------------------------\n\n";
                 break;
             }
             default:
@@ -175,13 +185,11 @@ void menu() {
         }
     }
 
-    // Free memory
     for (auto& emp : employees) {
         delete emp;
     }
 }
 
-// Main function
 int main() {
     menu();
     return 0;
